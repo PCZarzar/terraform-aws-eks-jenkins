@@ -1,0 +1,15 @@
+##### exemplo
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: game-deploy
+  name: service-game-deploy
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: game-deploy
+  type: LoadBalancer
