@@ -9,52 +9,52 @@ pipeline {
         stage('Checkout SCM'){
             steps{
                 script{
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/gauri17-pro/terraform-jenkins-eks.git']])
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PCZarzar/terraform-aws-eks-jenkins.git']])
                 }
             }
         }
-        stage('Initializing Terraform'){
+        stage('Initializing'){
             steps{
                 script{
-                    dir('EKS'){
+                    dir('EKS-cluster'){
                         sh 'terraform init'
                     }
                 }
             }
         }
-        stage('Formatting Terraform Code'){
+        stage('Formatting Code'){
             steps{
                 script{
-                    dir('EKS'){
+                    dir('EKS-cluster'){
                         sh 'terraform fmt'
                     }
                 }
             }
         }
-        stage('Validating Terraform'){
+        stage('Validating Code'){
             steps{
                 script{
-                    dir('EKS'){
+                    dir('EKS-cluster'){
                         sh 'terraform validate'
                     }
                 }
             }
         }
-        stage('Previewing the Infra using Terraform'){
+        stage('Previewing the Infra'){
             steps{
                 script{
-                    dir('EKS'){
+                    dir('EKS-cluster'){
                         sh 'terraform plan'
                     }
                     input(message: "Are you sure to proceed?", ok: "Proceed")
                 }
             }
         }
-        stage('Creating/Destroying an EKS Cluster'){
+        stage('Creating EKS Cluster'){
             steps{
                 script{
-                    dir('EKS') {
-                        sh 'terraform $action --auto-approve'
+                    dir('EKS-cluster') {
+                        sh 'terraform apply --auto-approve'
                     }
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
         stage('Deploying Game Application') {
             steps{
                 script{
-                    dir('EKS/ConfigurationFiles') {
+                    dir('EKS-cluster/DeployGame') {
                         sh 'aws eks update-kubeconfig --name my-eks-cluster'
                         sh 'kubectl apply -f deployment.yaml'
                         sh 'kubectl apply -f service.yaml'
