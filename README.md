@@ -55,11 +55,5 @@ This project uses Terraform to create infrastructure on AWS consisting of a VPC 
 2. Add the GitHub repository and Jenkinsfile to Jenkins.
 3. Run the pipeline defined in the Jenkinsfile to deploy the game.
 
-## Contribution
 
-Contributions are welcome! Feel free to open issues and submit pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
